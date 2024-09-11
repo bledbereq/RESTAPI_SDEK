@@ -1,0 +1,8 @@
+aiohttp==3.10.5
+Flask==3.0.3
+pandas==2.2.2
+Pillow==10.4.0
+torch==2.4.1
+torchvision==0.19.1
+
+git+https://github.com/openai/CLIP.git

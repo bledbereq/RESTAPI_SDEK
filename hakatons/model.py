@@ -1,4 +1,4 @@
-import clip
+# import clip
 import torch
 from torchvision import transforms
 from PIL import Image
