@@ -5,13 +5,16 @@ from PIL import Image
 from io import BytesIO
 from collections import defaultdict
 from category import *
+import numpy as np
+from scipy.spatial.distance import cosine
+
 
 # Инициализация модели CLIP и устройства
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model, preprocess = clip.load("ViT-B/32", device=device)
 
 def process_image_batch(images):
-    all_labels = list(category_1.values()) + list(category_2.values()) + list(category_3.values()) + list(category_4.values())
+    all_labels = list(category_1.keys()) + list(category_2.keys()) + list(category_3.keys()) + list(category_4.keys())
     
     with torch.no_grad():
         # Подготовка изображений и текстов
@@ -28,3 +31,32 @@ def process_image_batch(images):
     ]
     
     return results
+
+
+def get_image_embeddings(images):
+    with torch.no_grad():
+        # Подготовка изображений
+        processed_images = torch.stack([preprocess(img) for img in images]).to(device)
+        
+        # Получение эмбеддингов изображений
+        image_features = model.encode_image(processed_images)
+        image_features /= image_features.norm(dim=-1, keepdim=True)  # Нормализация
+        return image_features.cpu().numpy()
+
+
+def get_text_embeddings(texts):
+    with torch.no_grad():
+        # Подготовка текста
+        text_features = model.encode_text(clip.tokenize(texts).to(device))
+        text_features /= text_features.norm(dim=-1, keepdim=True)  # Нормализация
+        return text_features.cpu().numpy()
+
+def compute_similarity(image_embeddings, text_embeddings):
+    similarities = []
+    for img_emb in image_embeddings:
+        img_similarities = []
+        for txt_emb in text_embeddings:
+            sim = 1 - cosine(img_emb, txt_emb)  # Косинусное сходство
+            img_similarities.append(sim)
+        similarities.append(img_similarities)
+    return np.array(similarities)
