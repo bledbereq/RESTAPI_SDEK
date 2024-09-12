@@ -3,7 +3,7 @@ import pandas as pd
 # Define the path to the uploaded Excel file
 
 
-excel_file = './Script-19_2024-09-11 10-34.xlsx'
+excel_file = 'west.xlsx'
 print("Start programm")
 # Load the Excel file
 data = pd.read_excel(excel_file, sheet_name=None)

@@ -2,5 +2,6 @@
 *.json
 *.xlsx
 .venv
+venv
 __pycache__
 *.csv
