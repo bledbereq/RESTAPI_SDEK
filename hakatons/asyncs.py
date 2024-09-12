@@ -6,6 +6,12 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from model import *
 
+import aiohttp
+import asyncio
+from PIL import Image
+from io import BytesIO
+from concurrent.futures import ThreadPoolExecutor
+
 # Асинхронная функция для многопоточной загрузки изображений
 async def fetch_images(urls):
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
@@ -44,8 +50,8 @@ async def model_threads_async(json_mass_url_img):
         results = await asyncio.gather(*tasks)
     
     # Объединение результатов
-    probabilities = [item for sublist in results for item in sublist]
-    return probabilities
+    embeddings = [item for sublist in results for item in sublist]
+    return embeddings
 
 # Синхронная обертка для запуска асинхронной функции
 def model_threads(json_mass_url_img):

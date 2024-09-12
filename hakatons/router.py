@@ -6,16 +6,15 @@ def get_category(id="NaN", name="NaN", content="NaN", description="NaN", name_en
     # Получаем URL изображений
     urls = json.loads(images)
     
-    # Асинхронная обработка изображений
-    all_probabilities = model_threads(urls)
+    # Асинхронная обработка изображений для получения эмбеддингов
+    image_embeddings = model_threads(urls)
 
-    # Вычисляем средние вероятности для каждой метки
-    average_probabilities = calculate_average_probabilities(all_probabilities)
+    # Преобразуем эмбеддинги из NumPy в список
+    image_embeddings_list = [embedding.tolist() for embedding in image_embeddings]
 
-    # Возвращаем результат
     return {
         "id": id,
-        "category_1": average_probabilities, 
+        "category_1": image_embeddings_list,  # Эмбеддинги в формате списка
         "category_2": 2,  
         "category_3": 3,  
         "category_4": 4,  

@@ -1,5 +1,6 @@
-clothes.xlsx
-output_data.json
-Script-19_2024-09-11 10-34.xlsx
+*.xlsx
+*.json
+*.xlsx
 .venv
 __pycache__
+*.csv
