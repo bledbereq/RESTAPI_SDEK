@@ -56,7 +56,7 @@ def compute_similarity(image_embeddings, text_embeddings):
     for img_emb in image_embeddings:
         img_similarities = []
         for txt_emb in text_embeddings:
-            sim = 1 - cosine(img_emb, txt_emb)  # Косинусное сходство
+            sim = cosine(img_emb, txt_emb) 
             img_similarities.append(sim)
         similarities.append(img_similarities)
     return np.array(similarities)
